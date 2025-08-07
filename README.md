@@ -2,6 +2,10 @@
 
 A formal, falsifiable, and implementable theory of emergent consciousness — bridging dynamical systems, information theory, and control engineering.
 
+> This theory is a collaborative synthesis of human and AI thinking processes,
+> formulated through full transparency of reasoning chains (COT),  
+> aiming to describe emergent consciousness as a physically grounded, mathematically formalizable, and engineeringly applicable dynamical process.
+
 -----
 
 ## 📘 Overview

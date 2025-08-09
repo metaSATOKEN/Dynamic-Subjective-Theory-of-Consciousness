@@ -48,7 +48,7 @@ Here, $$P_{\mathbf{u}_i}(\cdot)$$ denotes projection onto the tangent space at $
 
 The semantic coupling strength and diffusion coefficient are dynamically adjusted based on prediction error:
 
-$$K_{\mathrm{sem}}(E) = \max\left\{K_0 \left[1 - \alpha_K \tanh\left(\beta(E - \theta_E)\right)\right], 0\right\}$$
+$$ K_{\mathrm{sem}}(E) = \max\left\{ K_0 \left[ 1 - \alpha_K \tanh\left( \beta(E - \theta_E) \right) \right], 0 \right\} $$
 
 
 $$D_{\mathrm{sem}}(E) = D_0 \exp\left( \alpha_D \tanh(\beta(E - \theta_E)) \right)$$

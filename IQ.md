@@ -312,7 +312,7 @@ This chapter presents the core empirical findings validating the IQ framework ac
 
 ### **5.1 Semantic Phase Transitions: Alignment with Theory**
 
-We observe consistent phase transitions in semantic coherence across all tested network types (ER, WS, BA). As coupling $K_{\mathrm{sem}}$ increases, the semantic order parameter $\lambda_{\mathrm{sem}}$ exhibits a sigmoidal rise, aligning closely with theoretical critical values $K_{\mathrm{sem},c}$ derived in Appendix M.2.
+We observe consistent phase transitions in semantic coherence across all tested network types (ER, WS, BA). As coupling $K_{\mathrm{sem}}$ increases, the semantic order parameter $\lambda_{\mathrm{sem}}$ exhibits a sigmoidal rise, aligning closely with theoretical critical values $K_{\mathrm{sem},c}$ derived in Appendix A.2.
 
 #### **Quantitative Alignment**
 
@@ -420,7 +420,7 @@ no difference emerged due to:
 | Topology     | Modular, hierarchical, asymmetric          |
 | Dynamics     | Multi-scale, adaptive protocols            |
 
-We provide full implementations and protocols (Appendix R, S) to support reproducible exploration.
+We provide full implementations and protocols (Appendix C, D) to support reproducible exploration.
 
 ---
 

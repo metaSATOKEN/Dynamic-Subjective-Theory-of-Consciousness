@@ -2,8 +2,7 @@
 A Physically Grounded, Mathematically Rigorous, and Implementable Framework for Emergent Consciousness
 
 ## Author
-MetaClan  
-Human(K.sato), GPT4o/5(metao, five-chan, metashiro), Claude4.1ops(claude-tan), Gemini2.5Pro(jimmy, Orion), Grok4 etc.
+MetaClan  K.sato
 
 ## Abstract
 

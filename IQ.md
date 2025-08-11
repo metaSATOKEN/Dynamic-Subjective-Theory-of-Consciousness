@@ -2,7 +2,7 @@
 
 **Author Names Omitted for Review**
 
-## **Abstract**
+## Abstract
 
 Understanding the emergent organization of meaning in neural systems is a fundamental challenge in consciousness science. This work introduces the IQ (Information-Theoretic constructivism of semantic content) framework, which unifies phase transition theory, information geometry, and stochastic dynamics on the unit hypersphere. Extending the Dynamic Subjective Theory of Consciousness (DSTC), we develop a rigorous model of semantic alignment and integration based on prediction-error-driven dynamics and von Mises–Fisher geometry.
 
@@ -10,9 +10,9 @@ The IQ model formalizes semantic order as a collective phenomenon on $$\mathbb{S
 
 We validate the model using synchronized neural networks, EEG semantic ignition detection, and structured mixture embeddings. Although the integration loop's feedback efficacy could not be statistically confirmed under small-scale settings, we frame this as a robustness boundary and propose a community-driven exploration challenge. All theoretical derivations, Python implementations, and standardized experimental protocols are openly provided.
 
-**Keywords**: Semantic dynamics, prediction error, von Mises–Fisher, phase transition, integration loop, information geometry, consciousness modeling
+**Keywords:** Semantic dynamics, prediction error, von Mises–Fisher, phase transition, integration loop, information geometry, consciousness modeling
 
-## **Introduction**
+## Introduction
 
 The emergence of structured meaning from distributed neuronal activity remains one of the core challenges in consciousness science and cognitive modeling. While classical models of brain function emphasize either dynamical synchrony or information-theoretic constraints independently, a unified account capturing the semantics of mental content remains elusive.
 
@@ -26,11 +26,11 @@ We empirically validate these theoretical contributions through a comprehensive 
 
 Our goal is to provide not only a theoretical contribution but also a fully reproducible computational and experimental platform for future community-driven verification. All implementations, protocols, and datasets are released with this work to ensure transparency and enable collaborative advancement of the field.
 
-## **Mathematical Framework**
+## Mathematical Framework
 
 We formalize the IQ framework by embedding semantic representations on the unit sphere $$\mathbb{S}^{d-1} \subset \mathbb{R}^d$$ and introducing predictive error-driven dynamics governed by stochastic differential equations (SDEs). The framework unifies semantic alignment and phase synchrony through dual-order parameters.
 
-**2.1 Semantic Embedding and Order Parameter**
+### 2.1 Semantic Embedding and Order Parameter
 
 Each agent $$i$$ maintains a semantic vector $$\mathbf{u}_i \in \mathbb{S}^{d-1}$$, representing its current internal content state. The population-level semantic alignment is quantified by the semantic order parameter:
 
@@ -38,7 +38,7 @@ $$\lambda_{\mathrm{sem}} = 1 - \exp(-c_{\mathrm{sem}} \kappa(\mathbf{R}))$$
 
 where $$\mathbf{R} = \left\| \frac{1}{N} \sum_{i=1}^{N} \mathbf{u}_i \right\|$$ is the mean resultant length and $$\kappa(\cdot)$$ denotes the concentration parameter estimator of the von Mises–Fisher (vMF) distribution.
 
-**2.2 Prediction Error-Driven Dynamics**
+### 2.2 Prediction Error-Driven Dynamics
 
 The temporal evolution of each semantic vector $$\mathbf{u}_i$$ is modeled as a Stratonovich SDE on $$\mathbb{S}^{d-1}$$:
 
@@ -48,12 +48,11 @@ Here, $$P_{\mathbf{u}_i}(\cdot)$$ denotes projection onto the tangent space at $
 
 The semantic coupling strength and diffusion coefficient are dynamically adjusted based on prediction error:
 
-$$ K_{\mathrm{sem}}(E) = \max\left\{ K_0 \left[ 1 - \alpha_K \tanh\left( \beta(E - \theta_E) \right) \right], 0 \right\} $$
-
+$$K_{\mathrm{sem}}(E) = \max\left\{ K_0 \left[ 1 - \alpha_K \tanh\left( \beta(E - \theta_E) \right) \right], 0 \right\}$$
 
 $$D_{\mathrm{sem}}(E) = D_0 \exp\left( \alpha_D \tanh(\beta(E - \theta_E)) \right)$$
 
-**2.3 Critical Coupling and Phase Transition**
+### 2.3 Critical Coupling and Phase Transition
 
 We analytically derive the critical coupling for semantic ignition through a linearization analysis of the spherical Fokker-Planck equation:
 
@@ -61,7 +60,7 @@ $$K_{\mathrm{sem},c} = \frac{c_d D_{\mathrm{sem}}}{\lambda_2(L_*)}$$
 
 where $$c_d = \frac{d-1}{d}$$ represents the geometric correction factor for the unit hypersphere, $$L_*$$ is the symmetrized Laplacian $$L_* = I - \frac{1}{2}(\tilde{A} + \tilde{A}^T)$$, and $$\lambda_2$$ is its Fiedler eigenvalue. This defines a sharp semantic phase transition analogous to Kuramoto synchrony but operating in the high-dimensional semantic space.
 
-**2.4 Integration Loop Hypothesis**
+### 2.4 Integration Loop Hypothesis
 
 We hypothesize a feedback loop linking semantic coherence ($$\lambda_{\mathrm{sem}}$$) to phase synchrony ($$\lambda$$) via phase coupling modulation. This loop is operationalized through the dynamic adjustment of phase coupling strength:
 
@@ -71,17 +70,17 @@ This defines a three-stage feedback mechanism: **Semantic gain** leads to enhanc
 
 The integration loop is empirically tested through perturbation-recovery experiments, where we examine whether semantic-phase coupling accelerates system recovery following disruptions to either semantic or phase dynamics.
 
-## **Methods**
+## Methods
 
 We detail the simulation framework used to evaluate the IQ model across semantic, phase, and integration dynamics. All experiments were implemented in Python using NumPy and SciPy, with reproducibility ensured via fixed random seeds and shared protocols.
 
-**3.1 Network Construction and Initialization**
+### 3.1 Network Construction and Initialization
 
 We generated random directed graphs with $$N$$ nodes using three canonical network models that capture different aspects of real-world connectivity patterns. **Erdős-Rényi (ER)** networks were constructed with edge probability $$p=0.1$$ to provide a baseline random topology. **Watts-Strogatz (WS)** networks used $$k=6$$ initial connections per node with rewiring probability $$p=0.3$$ to capture small-world properties. **Barabási-Albert (BA)** networks employed $$m=3$$ edges per new node to generate scale-free topologies.
 
 Each graph was row-stochasticized to produce $$\tilde{A}$$, ensuring that the coupling dynamics preserve the probabilistic interpretation of semantic influence. Initial semantic vectors $$\{\mathbf{u}_i\}$$ were sampled uniformly on $$\mathbb{S}^{d-1}$$ via Gaussian projection and normalization, providing an unbiased starting configuration. Phase angles $$\theta_i$$ were initialized randomly in $$[0, 2\pi]$$ to ensure no initial phase bias.
 
-**3.2 Simulation Parameters and Error Modeling**
+### 3.2 Simulation Parameters and Error Modeling
 
 The core simulation parameters were carefully selected based on theoretical considerations and preliminary sensitivity analysis. We used dimensionality $$d = 16$$ to balance computational efficiency with sufficient semantic complexity. The simulation ran for $$T = 2000$$ steps with time step $$dt = 0.005$$, providing adequate temporal resolution for capturing both fast phase dynamics and slower semantic evolution.
 
@@ -93,7 +92,7 @@ $$E = \mathrm{KL}(P_{\mathrm{emp}} \| P_{\mathrm{model}}) = \sum_{i=1}^C p_i^{\m
 
 We used synthetic classification tasks with 2–4 classes, softmax output logits, and label-driven targets to generate realistic prediction error signals that drive the semantic dynamics.
 
-**3.3 Numerical Integration**
+### 3.3 Numerical Integration
 
 Semantic updates were performed using a second-order Stratonovich Heun method to maintain geometric consistency on the unit hypersphere. This approach uses shared noise increments to ensure proper handling of the stochastic integral:
 
@@ -109,7 +108,7 @@ $$\theta_i(t + dt) = \theta_i(t) + dt \cdot \omega_i + \frac{K_{\mathrm{phase}}}
 
 with $$\omega_i = 0$$ unless otherwise stated, focusing on purely coupled dynamics without intrinsic frequencies.
 
-**3.4 Order Parameter Computation**
+### 3.4 Order Parameter Computation
 
 Semantic alignment $$\lambda_{\mathrm{sem}}$$ was computed via the vMF estimator, which provides a principled measure of directional concentration:
 
@@ -127,11 +126,11 @@ with $$H_n = -\sum \pi_m \log \pi_m / \max(1, \log M)$$ representing the normali
 
 To ensure computational efficiency in small-scale settings, we employed k-means initialization followed by vMF parameter estimation. Full-scale versions should employ complete EM clustering with BIC model selection for optimal cluster number determination.
 
-## **Results**
+## Results
 
 We evaluate the IQ model along three principal dimensions: semantic phase transition under variable coupling, the efficacy of integration feedback loops, and creativity-diversity trade-offs under mixed clustering regimes. Full experimental configurations are provided in the supplementary materials, and all code and data are available in the accompanying repository.
 
-**4.1 Semantic Phase Transitions**
+### 4.1 Semantic Phase Transitions
 
 To test the theoretical prediction of a critical coupling threshold $$K_{\mathrm{sem},c}$$ derived from the linearized Fokker-Planck equation, we performed comprehensive parameter sweeps over $$K_{\mathrm{sem}}$$ normalized by $$K_c$$ across three network topologies: Erdős-Rényi (ER), Watts-Strogatz (WS), and Barabási-Albert (BA).
 
@@ -139,7 +138,7 @@ Our results demonstrate clear evidence for the predicted phase transitions. We o
 
 The consistency of these transitions across different network topologies suggests that the critical coupling condition captures a fundamental property of semantic alignment that is robust to variations in connectivity structure. This universality supports the theoretical foundation of the IQ framework and its potential applicability to diverse neural and artificial systems.
 
-**4.2 Integration Loop Dynamics**
+### 4.2 Integration Loop Dynamics
 
 We simulated feedback-enabled and feedback-disabled conditions with strong external perturbations applied to the semantic layer using $$E_{\mathrm{perturb}} = 1.4$$. The goal was to evaluate whether the $$\lambda_{\mathrm{sem}} \rightarrow K_{\mathrm{phase}} \rightarrow \lambda_{\mathrm{phase}}$$ loop accelerates recovery following disruptions to system coherence.
 
@@ -149,7 +148,7 @@ Rather than interpreting this as a theoretical failure, we treat this result as 
 
 The recovery data reveals that both feedback-enabled and feedback-disabled systems exhibit immediate restoration of phase coherence, suggesting that the integration feedback mechanism operates in a latent regime under these conditions. This finding raises important questions about the parameter ranges where integration feedback transitions from latent to demonstrably critical influence on system dynamics.
 
-**4.3 Creativity-Diversity Trade-Off**
+### 4.3 Creativity-Diversity Trade-Off
 
 We examined the behavior of mixed von Mises-Fisher alignment $$\lambda_{\mathrm{sem}}^{\mathrm{mix}}$$ as a function of mixture parameter $$\gamma_{\mathrm{mix}}$$. For $$\gamma_{\mathrm{mix}} \in [0, 1]$$, we swept configurations and computed the number of selected clusters $$M_{\mathrm{sel}}$$, base alignment $$\lambda_{\mathrm{base}}$$, normalized entropy $$H_n$$, and overall $$\lambda_{\mathrm{sem}}^{\mathrm{mix}}$$.
 
@@ -157,7 +156,7 @@ Our results reveal a characteristic concave trade-off curve with an optimal $$\g
 
 The trade-off curve demonstrates that pure integration ($$\gamma_{\mathrm{mix}} = 0$$) and pure diversity ($$\gamma_{\mathrm{mix}} = 1$$) are both suboptimal, with intermediate values providing the best balance of semantic structure and flexibility. This result has important implications for understanding cognitive flexibility and creative processes, suggesting that optimal performance requires carefully balanced semantic organization rather than extreme coherence or dispersion.
 
-**4.4 Integration Loop Efficacy: An Open Empirical Question**
+### 4.4 Integration Loop Efficacy: An Open Empirical Question
 
 Under our experimental configuration ($$N=120$$, $$E_{\mathrm{perturb}}=1.4$$, recovery threshold 99%), both feedback-enabled and feedback-disabled conditions exhibited immediate recovery ($$t_{\mathrm{recovery}} \approx 0$$), precluding statistical differentiation. Rather than interpreting this as a theoretical limitation, we identify it as evidence of **remarkable system robustness** that saturates our current detection methodology.
 
@@ -167,11 +166,11 @@ First, **scale-dependent emergence** suggests that effects may manifest only at 
 
 This null result defines a **robustness boundary** and establishes specific parameter regimes requiring systematic exploration. Rather than representing a limitation of the theoretical framework, it highlights the system's remarkable stability and identifies concrete directions for future empirical investigation. The robustness we observe may itself be a crucial feature of conscious systems, which must maintain coherence despite constant perturbations while remaining flexible enough to adapt to changing circumstances.
 
-## **Discussion**
+## Discussion
 
 We discuss the theoretical implications of the IQ framework, its relationship to prior models of semantic dynamics and consciousness, and future directions enabled by its modular structure.
 
-**5.1 Theoretical Significance of Semantic Phase Transitions**
+### 5.1 Theoretical Significance of Semantic Phase Transitions
 
 The detection of critical coupling thresholds in semantic dynamics validates the information-theoretic approach to emergent structure in high-dimensional concept spaces. The behavior of $$\lambda_{\mathrm{sem}}$$ under variable $$K_{\mathrm{sem}}$$ matches predictions from the linearized spherical Fokker-Planck formalism and suggests that semantic alignment is governed by principles analogous to thermodynamic phase transitions.
 
@@ -179,7 +178,7 @@ This finding has profound implications for understanding how meaning emerges in 
 
 Importantly, the upward bias in $$\lambda_{\mathrm{sem}}$$ at low $$K$$ highlights the role of intrinsic geometric constraints (such as $$R > 0$$ on $$\mathbb{S}^{d-1}$$) and finite-size sampling effects. These artifacts are predictable and controllable, further supporting the robustness of the theoretical derivation. The consistency of these effects across different network topologies demonstrates that the geometric foundations of the IQ framework capture universal aspects of semantic organization.
 
-**5.2 Integration Feedback as Cognitive Homeostasis**
+### 5.2 Integration Feedback as Cognitive Homeostasis
 
 Although our experiments did not reveal statistically distinct recovery trajectories between feedback-enabled and feedback-disabled conditions, we interpret this null result not as a failure of the integration hypothesis, but as an indication of systemic robustness that may be fundamental to conscious systems.
 
@@ -187,7 +186,7 @@ In biological systems, homeostatic mechanisms often remain latent until critical
 
 This view aligns with the idea that consciousness operates not merely at criticality, but near robust attractors modulated by task and context. The integration loop may function as a cognitive homeostatic mechanism that maintains coherent conscious states while allowing for adaptive flexibility when circumstances require semantic reorganization. This perspective underscores the value of flexible, testable hypotheses within structured dynamical systems and suggests that apparent null results may reveal important aspects of system robustness.
 
-**5.3 Creativity, Diversity, and Cognitive Flexibility**
+### 5.3 Creativity, Diversity, and Cognitive Flexibility
 
 The observed non-monotonic behavior of $$\lambda_{\mathrm{sem}}^{\mathrm{mix}}$$ with respect to $$\gamma_{\mathrm{mix}}$$ supports a structured diversity hypothesis: cognitive systems benefit from neither pure integration nor pure dispersion, but from optimized mixtures of alignment and entropy.
 
@@ -195,7 +194,7 @@ This finding aligns with empirical observations in neuroscience, particularly st
 
 The creativity-diversity trade-off revealed by our mixture analysis has important implications for understanding cognitive flexibility and innovation. Systems that are too coherent may lack the diversity necessary for creative recombination, while systems that are too diverse may lack the stability necessary for coherent thought and action. The optimal intermediate region suggests that creative cognition operates at a specific balance point that maximizes both semantic coherence and adaptive flexibility.
 
-**5.4 Toward Community-Driven Verification of Integration Dynamics**
+### 5.4 Toward Community-Driven Verification of Integration Dynamics
 
 The integration loop's null result under current conditions transforms from a limitation into a **research opportunity**. By providing complete theoretical frameworks, validated implementations, and standardized protocols, we establish IQ as both a theoretical contribution and an **empirical research platform** for community-driven investigation.
 
@@ -205,7 +204,7 @@ The recommended exploration grid encompasses multiple dimensions of investigatio
 
 Our **open science commitment** ensures that all simulation code, configuration files, and generated data are provided in the supplementary repository, enabling full replication and systematic extension. This collaborative framework transforms a null result into a **scientific frontier**, positioning IQ as the foundation for next-generation empirical consciousness studies. The community-driven approach we propose has the potential to reveal integration loop effects that remain hidden under current experimental conditions while advancing our collective understanding of semantic dynamics in conscious systems.
 
-## **Conclusion**
+## Conclusion
 
 We have introduced IQ (Information-Theoretic Constructivism of Semantic Content), a unified framework for modeling semantic dynamics, phase transitions, and integration feedback in high-dimensional cognitive systems. Building on the DSTC (Dynamic Subjective Theory of Consciousness) paradigm, IQ formalizes the interactions between semantic alignment and predictive feedback using tools from stochastic geometry, information theory, and synchronization dynamics.
 
@@ -219,7 +218,7 @@ Future work will expand IQ to incorporate hierarchical semantics that capture th
 
 The IQ framework represents a step toward understanding consciousness as an information-theoretic phenomenon that emerges from the collective dynamics of semantic representations. By providing rigorous mathematical foundations, empirical validation protocols, and open-source implementations, we hope to accelerate progress toward a quantitative science of conscious experience and its underlying computational principles.
 
-## **Acknowledgements**
+## Acknowledgements
 
 This work is the result of an interdisciplinary collaboration that bridges theoretical modeling, algorithmic implementation, and cognitive science. We are deeply grateful to the open-source communities and contributors whose tools and libraries enabled rapid prototyping and rigorous experimentation throughout this project.
 
@@ -229,13 +228,13 @@ We also thank the broader scientific community for ongoing discussions around ph
 
 All simulations were executed using standard Python scientific libraries (NumPy, SciPy, Matplotlib) and the full codebase is openly provided for community verification and extension. This project is part of a larger initiative to establish a reproducible, extensible, and collaborative platform for empirical modeling in consciousness science, advancing the field toward more rigorous and quantitative approaches to understanding conscious experience.
 
-## **Appendix A: Mathematical Foundations**
+## Appendix A: Mathematical Foundations
 
 This appendix provides the formal mathematical basis for the information-theoretic phase transition framework presented in the main text. It includes derivations of the critical semantic coupling $$K_{\mathrm{sem},c}$$, the construction and properties of the mixture von Mises–Fisher (vMF) representation, and the stochastic differential geometry underlying the semantic dynamics on the unit hypersphere.
 
 We denote the unit hypersphere in $$\mathbb{R}^d$$ as $$\mathbb{S}^{d-1}$$, and use the tangent projection operator $$P_{\mathbf{u}} = I - \mathbf{u} \mathbf{u}^\top$$ to define the constraint-preserving evolution of semantic vectors. All dynamics are formulated in continuous-time Stratonovich form, and converted to the Itô representation where necessary to analyze equilibrium behavior via the Fokker–Planck equation.
 
-**A.1 Critical Coupling Derivation**
+### A.1 Critical Coupling Derivation
 
 We derive the critical semantic coupling $$K_{\mathrm{sem},c}$$ required to induce a semantic phase transition on the hypersphere $$\mathbb{S}^{d-1}$$. This derivation is grounded in a mean-field approximation combined with tangent space projection, preserving the spherical constraint of semantic representations.
 
@@ -255,7 +254,7 @@ where $$\lambda_2(L_*)$$ is the second smallest eigenvalue (Fiedler value) of th
 
 This expression explicitly links the onset of semantic coherence to the topology of the interaction graph and the ambient semantic dimensionality, providing a quantitative prediction for when semantic phase transitions will occur in networked systems.
 
-**A.2 Mixture von Mises–Fisher Extension**
+### A.2 Mixture von Mises–Fisher Extension
 
 To account for heterogeneous or multimodal semantic distributions, we extend the single von Mises–Fisher (vMF) formulation to a mixture model. Let $$\{\mathbf{u}_i\}_{i=1}^N$$ denote semantic vectors on the unit hypersphere $$\mathbb{S}^{d-1}$$. The semantic distribution is modeled as a mixture of $$M$$ vMF components:
 
@@ -277,7 +276,7 @@ with $$c_{\mathrm{sem}}$$ controlling sensitivity, $$\gamma_{\mathrm{mix}}$$ con
 
 This definition ensures high $$\lambda_{\mathrm{sem}}^{\mathrm{mix}}$$ for concentrated, unimodal distributions and lower values for fragmented or high-entropy mixtures. The mixture model allows IQ to capture transitions between integrated and diversified semantic states, facilitating applications in creativity modeling and task-dependent cognitive configurations.
 
-**A.3 Gain Function Derivation**
+### A.3 Gain Function Derivation
 
 In the IQ framework, prediction error modulates both the strength of semantic coupling $$K_{\mathrm{sem}}$$ and the diffusion coefficient $$D_{\mathrm{sem}}$$. This section derives the gain functions used in the simulations and analysis.
 
@@ -303,7 +302,7 @@ This exponential modulation provides low diffusion when prediction error is low,
 
 These gain functions implement a biologically plausible tradeoff. Low prediction error leads to strong attractor dynamics (high $$K_{\mathrm{sem}}$$, low $$D_{\mathrm{sem}}$$), while high error induces semantic destabilization (low $$K_{\mathrm{sem}}$$, high $$D_{\mathrm{sem}}$$). This mechanism supports fast adaptation by destabilizing outdated representations and promotes semantic reorganization in novel or surprising contexts.
 
-**A.4 Critical Coupling Analysis**
+### A.4 Critical Coupling Analysis
 
 This section derives the critical coupling condition for semantic synchronization in the IQ model. We follow the classical approach adapted to directional dynamics on the unit hypersphere $$\mathbb{S}^{d-1}$$.
 
@@ -335,7 +334,7 @@ where $$\lambda_2(L)$$ is the Fiedler eigenvalue (second smallest eigenvalue) of
 
 This result captures the tradeoff between alignment and noise. Large $$K_{\mathrm{sem}}$$ promotes semantic coherence, large $$D_{\mathrm{sem}}$$ injects destabilizing diffusion, and stronger topologies (large $$\lambda_2$$) facilitate easier synchronization.
 
-**A.5 Prediction Error–Dependent Gain Functions**
+### A.5 Prediction Error–Dependent Gain Functions
 
 A key feature of the IQ model is the dynamic modulation of semantic alignment and diffusion coefficients based on prediction error. This section formalizes the nonlinear gain functions that implement this mechanism.
 
@@ -363,11 +362,11 @@ This function enhances diffusion under high prediction error, enabling semantic 
 
 Together, these gain functions shape the semantic transition dynamics. The effective signal-to-noise ratio $$K_{\mathrm{sem}}(E) / D_{\mathrm{sem}}(E)$$ becomes prediction-error sensitive, the system self-organizes into coherent or exploratory modes depending on environmental mismatch, and these gains are inspired by neuromodulatory control in predictive coding frameworks.
 
-## **Appendix B: Numerical Methods**
+## Appendix B: Numerical Methods
 
 This appendix describes the numerical integration schemes used for simulating the coupled stochastic dynamics of the IQ model, including both semantic and phase systems. All methods are implemented in NumPy and verified to preserve the geometric and stochastic structure of the model.
 
-**B.1 Semantic Dynamics: Stratonovich Euler--Heun Scheme**
+### B.1 Semantic Dynamics: Stratonovich Euler–Heun Scheme
 
 The semantic vector $$\mathbf{u}_i \in \mathbb{S}^{d-1}$$ evolves on the unit hypersphere under influence from semantic neighbors and stochastic perturbations. The Stratonovich form of the SDE is:
 
@@ -410,7 +409,7 @@ def project_tangent(U, X):
     return X - (np.sum(U * X, axis=1, keepdims=True)) * U
 ```
 
-**B.2 Phase Dynamics: Itô Euler Scheme**
+### B.2 Phase Dynamics: Itô Euler Scheme
 
 The phase state $$\theta_i \in [0, 2\pi)$$ evolves via Kuramoto-like coupling modulated by semantic coherence and stochastic noise. The Itô-form SDE is:
 
@@ -426,7 +425,7 @@ def phase_step(theta, A, K_phase, omega, D_phase, dt, rng):
     return theta + dt * (omega + coupling) + np.sqrt(2 * D_phase * dt) * dW
 ```
 
-**B.3 Coupled Semantic--Phase Integration with Feedback**
+### B.3 Coupled Semantic–Phase Integration with Feedback
 
 Semantic and phase dynamics are coupled via prediction-error feedback. We implement a unified update step:
 
@@ -456,11 +455,11 @@ def integrated_step(theta, U, A, Atil, E_pred_raw, E_pred_smooth, params, dt, rn
 
 This step ensures consistent coupling between dynamics, and includes exponential moving average (EMA) smoothing and clipping of the prediction error signal $$E_{\mathrm{pred}}$$ for robustness.
 
-## **Appendix C: Reference Implementation**
+## Appendix C: Reference Implementation
 
 This appendix provides a fully executable reference implementation of the IQ model, using NumPy and standard scientific Python libraries. The code corresponds to the main mathematical definitions and simulation protocols described in the paper.
 
-**C.1 Parameters and Initialization**
+### C.1 Parameters and Initialization
 
 We define a centralized parameter dictionary and initialization routines:
 
@@ -494,7 +493,7 @@ def init_state(N, d, rng):
     return theta, U
 ```
 
-**C.2 Order Parameter Computation**
+### C.2 Order Parameter Computation
 
 ```python
 def compute_lambda_phase(theta):
@@ -515,7 +514,7 @@ def kappa_hat_from_R(R, d, eps=1e-8):
     return R * (d - R**2) / (1 - R**2)
 ```
 
-**C.3 Gain Function Definitions**
+### C.3 Gain Function Definitions
 
 ```python
 def compute_K_sem(E, params):
@@ -533,11 +532,11 @@ def compute_D_sem(E, params):
     return D0 * np.exp(alpha_D * np.tanh(beta * (E - theta_E)))
 ```
 
-## **Appendix D: Experimental Protocols**
+## Appendix D: Experimental Protocols
 
 This appendix summarizes the experimental protocols used for the validation of the IQ framework, covering semantic phase transition analysis, integration loop efficacy testing, and creativity–diversity trade-off measurements. Each protocol is provided in a reproducible, parameterized format to facilitate community replication and extension.
 
-**D.1 Semantic Transition Protocol**
+### D.1 Semantic Transition Protocol
 
 **Objective:** To measure the emergence of semantic order parameter $$\lambda_{\mathrm{sem}}$$ as a function of normalized coupling strength $$K_{\mathrm{sem}}/K_{\mathrm{sem},c}$$.
 
@@ -545,7 +544,7 @@ This appendix summarizes the experimental protocols used for the validation of t
 
 **Output:** CSV logs contain average $$\lambda_{\mathrm{sem}}$$ versus $$K/K_c$$ data, sigmoid fits follow the form $$\lambda_{\mathrm{sem}} \sim 1 / (1 + \exp(-a(K/K_c - b)))$$, and figures plot empirical points with fitted curves.
 
-**D.2 Integration Loop Protocol**
+### D.2 Integration Loop Protocol
 
 **Objective:** To evaluate whether the feedback loop $$\lambda_{\mathrm{sem}} \rightarrow K_{\mathrm{phase}} \rightarrow \lambda$$ facilitates faster recovery after semantic perturbation.
 
@@ -553,7 +552,7 @@ This appendix summarizes the experimental protocols used for the validation of t
 
 **Output:** CSV logs record $$\lambda$$, $$E_{\mathrm{pred}}$$, and recovery flags. Tables aggregate metrics including mean recovery time, improvement ratio, and statistical significance. Sample recovery trajectories are provided in supplementary figures.
 
-**D.3 Mixture Creativity Protocol**
+### D.3 Mixture Creativity Protocol
 
 **Objective:** To measure the relationship between mixture diversity ($$\gamma_{\mathrm{mix}}$$) and semantic coherence ($$\lambda_{\mathrm{sem}}^{\mathrm{mix}}$$), approximating creativity–diversity trade-offs.
 
@@ -561,11 +560,11 @@ This appendix summarizes the experimental protocols used for the validation of t
 
 **Output:** CSV logs record $$\gamma_{\mathrm{mix}}$$, $$M_{\text{sel}}$$, $$\lambda_{\mathrm{sem}}^{\mathrm{mix}}$$, and $$H_n$$. Scatter plots show semantic coherence versus entropy, colored by $$\gamma_{\mathrm{mix}}$$.
 
-**D.4 Reproducibility Guarantee**
+### D.4 Reproducibility Guarantee
 
 All experiments are defined by corresponding configuration files published with the repository. Each run can be invoked with standardized command-line interfaces, and intermediate and final results are stored as CSV and PNG files for direct inclusion into LaTeX documents. This ensures complete reproducibility and facilitates community extension of the experimental protocols.
 
-## **Appendix E: Glossary of Terms**
+## Appendix E: Glossary of Terms
 
 This appendix summarizes the key variables, parameters, and symbols used throughout the IQ framework for theoretical clarity and implementation reproducibility.
 

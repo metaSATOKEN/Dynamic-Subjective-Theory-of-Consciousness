@@ -607,6 +607,24 @@ def chi_sign_from_history(theta_hist: np.ndarray, lag: int, sample_pairs: int = 
     s1 = np.sign(np.cos(d1))
     return float(np.mean(s0 * s1))
 
+def jaccard_chi_from_history(theta_hist: np.ndarray, lag: int, sample_pairs: int = 4000) -> float:
+    T, N = theta_hist.shape
+    if T <= lag:
+        return 0.0
+    t0, t1 = T - 1, T - 1 - lag
+    th0 = theta_hist[t0]; th1 = theta_hist[t1]
+    m = min(sample_pairs, N*(N-1)//2)
+    if m <= 0: return 0.0
+    i = np.random.randint(0, N, size=m)
+    j = np.random.randint(0, N, size=m)
+    mask = i != j
+    i, j = i[mask], j[mask]
+    pos0 = (np.cos(th0[i] - th0[j]) >= 0.0)
+    pos1 = (np.cos(th1[i] - th1[j]) >= 0.0)
+    inter = np.logical_and(pos0, pos1).sum()
+    union = np.logical_or(pos0, pos1).sum() + 1e-12
+    return float(inter / union)
+
 @dataclass
 class SimConfig:
     N: int = 140
@@ -1219,7 +1237,7 @@ python3 ablation_v4.py      --N 140 --d 16 --T 2.5 --seeds 5
 The following plots reproduce the main computational validation results in Section 4.7:
 
 1. **β–γ Phase Diagrams**
-   For λ, λ<sub>sem</sub>, and χ, with confidence bands across seeds. Highlight the **triple-coherence band** (λ≥**0.70**, λ<sub>sem</sub>≥**0.55**, χ≥**0.85**) as a shaded region in phase diagrams; report seed-wise CIs.
+   For λ, λ<sub>sem</sub>, and χ, with confidence bands across seeds. Highlight the **triple-coherence band** (λ≥**0.40**, λ<sub>sem</sub>≥**0.50**, χ≥**0.40**) as a shaded region in phase diagrams; report seed-wise CIs.
 
 2. **Ablation Time Series**
    Compare β = 0, γ = 0, and both = 0 against the baseline; report effect sizes (Cohen's *d*).

@@ -541,25 +541,10 @@ All quantities and operators use the definitions in Sections 2–3 of the paper.
 
 #### kernel_ref_v4.py
 
-```python
-# -*- coding: utf-8 -*-
-"""
-Kernel reference (v4):
-- Endogenous attention with syntactic gravity (beta) & semantic bridging (gamma)
-- Bridging uses (1 - |s_sem|) per Section 2.2 (Revised)
-- Sinkhorn normalization (7 iters)
-- Fast phase SDE, slow (A,beta,gamma) refresh with eps*dt scaling
-- Local semantic drift toward A@U with sqrt(dt) diffusion on unit sphere
-- Structural persistence chi_sign_from_history per Sec. 2.1
-- Spectral rho_max(A_norm) where A_norm = D_S^{-1/2} S D_S^{-1/2}, S=(A+A^T)/2
-- Lorentzian (Cauchy) natural frequencies for Kuramoto consistency
-Dependencies: numpy
-"""
 
+# -*- coding: utf-8 -*-
 from dataclasses import dataclass
 import numpy as np
-
-# ---------- utilities ----------
 
 def set_seed(seed:int=42):
     np.random.seed(seed)
@@ -588,18 +573,13 @@ def proj_tangent_sphere(U: np.ndarray, V: np.ndarray) -> np.ndarray:
     dot = (U * V).sum(axis=1, keepdims=True)
     return V - dot * U
 
-# ---------- spectral function ----------
-
 def spectral_rho_Anorm_from_A(A: np.ndarray, eps: float = 1e-12) -> float:
-    """rho_max(A_norm) with A_norm = D_S^{-1/2} S D_S^{-1/2}, S=(A+A^T)/2."""
     S = 0.5 * (A + A.T)
     d = S.sum(axis=1)
     D_inv_sqrt = np.diag(1.0 / np.sqrt(d + eps))
     A_norm = D_inv_sqrt @ S @ D_inv_sqrt
     vals = np.linalg.eigvalsh(A_norm)
     return float(np.max(vals))
-
-# ---------- order parameters ----------
 
 def phase_order_param(theta: np.ndarray) -> float:
     R = np.exp(1j * theta).mean()
@@ -609,7 +589,6 @@ def semantic_order_param(U: np.ndarray) -> float:
     return float(np.linalg.norm(U.mean(axis=0)))
 
 def chi_sign_from_history(theta_hist: np.ndarray, lag: int, sample_pairs: int = 4000) -> float:
-    """chi(t) per paper Sec.2.1: mean_{i<j} sign(cos Δ_ij(t)) * sign(cos Δ_ij(t-lag))."""
     T, N = theta_hist.shape
     if T <= lag:
         return 0.0
@@ -628,125 +607,73 @@ def chi_sign_from_history(theta_hist: np.ndarray, lag: int, sample_pairs: int = 
     s1 = np.sign(np.cos(d1))
     return float(np.mean(s0 * s1))
 
-def pearson_chi_from_history(theta_hist: np.ndarray, lag: int, sample_pairs: int = 4000) -> float:
-    """Pearson correlation between cosΔ(t) and cosΔ(t-lag) over sampled pairs."""
-    T, N = theta_hist.shape
-    if T <= lag:
-        return 0.0
-    t0, t1 = T - 1, T - 1 - lag
-    th0 = theta_hist[t0]; th1 = theta_hist[t1]
-    m = min(sample_pairs, N*(N-1)//2)
-    if m <= 0: return 0.0
-    i = np.random.randint(0, N, size=m)
-    j = np.random.randint(0, N, size=m)
-    mask = i != j
-    i, j = i[mask], j[mask]
-    x = np.cos(th0[i] - th0[j])
-    y = np.cos(th1[i] - th1[j])
-    x = x - x.mean(); y = y - y.mean()
-    denom = (np.linalg.norm(x) * np.linalg.norm(y) + 1e-12)
-    return float((x @ y) / denom)
-
-def jaccard_chi_from_history(theta_hist: np.ndarray, lag: int, sample_pairs: int = 4000) -> float:
-    """Jaccard index of positive-cos pairs at t and t-lag over sampled pairs."""
-    T, N = theta_hist.shape
-    if T <= lag:
-        return 0.0
-    t0, t1 = T - 1, T - 1 - lag
-    th0 = theta_hist[t0]; th1 = theta_hist[t1]
-    m = min(sample_pairs, N*(N-1)//2)
-    if m <= 0: return 0.0
-    i = np.random.randint(0, N, size=m)
-    j = np.random.randint(0, N, size=m)
-    mask = i != j
-    i, j = i[mask], j[mask]
-    pos0 = (np.cos(th0[i] - th0[j]) >= 0.0)
-    pos1 = (np.cos(th1[i] - th1[j]) >= 0.0)
-    inter = np.logical_and(pos0, pos1).sum()
-    union = np.logical_or(pos0, pos1).sum() + 1e-12
-    return float(inter / union)
-
-# ---------- config ----------
-
 @dataclass
 class SimConfig:
-    N: int = 160
+    N: int = 140
     d: int = 16
-    T: float = 2.0
+    T: float = 2.5
     dt_fast: float = 0.01
     eps: float = 0.05
-    seed: int = 3
+    seed: int = 7
     tau_attn: float = 1.0
     sinkhorn_iters: int = 7
     recompute_sem_every: int = 10
-    D_ind: float = 0.05
-    D_com: float = 0.02
-    eta_sem: float = 0.10
-    Delta: float = 0.5     # Cauchy width
-    K0: float = 1.5
+    D_ind: float = 0.03
+    D_com: float = 0.01
+    eta_sem: float = 0.08
+    Delta: float = 0.4
+    K0: float = 1.8
     lam_sem_star: float = 0.8
     chi_star: float = 1.0
     chi_lag_steps: int = 80
-    chi_smooth_rho: float = 0.2
+    chi_smooth_rho: float = 0.25
     record_every: int = 1
-
-# ---------- main sim ----------
 
 def run_sim(cfg: SimConfig, beta_fixed=None, gamma_fixed=None, add_theta_history=False):
     set_seed(cfg.seed)
     N, d = cfg.N, cfg.d
     steps = int(round(cfg.T / cfg.dt_fast))
 
-    # phases & Lorentzian frequencies
     theta = 2*np.pi*np.random.rand(N)
     u = np.random.rand(N)
     omega = cfg.Delta * np.tan(np.pi*(u - 0.5))
 
-    # semantics
     U = np.random.randn(N, d); U = unit_norm_rows(U)
 
-    # ring syntactic distance
     idx = np.arange(N)[:,None]
     Dsyn = np.abs(idx - idx.T)
     Dsyn = np.minimum(Dsyn, N - Dsyn)
     Dsyn = robust_scale(Dsyn)
 
-    # semantic similarity and bridging weight
     S_sem = U @ U.T; np.fill_diagonal(S_sem, 1.0)
 
-    # init beta, gamma
     beta = 0.8 if beta_fixed is None else float(beta_fixed)
     gamma = 0.6 if gamma_fixed is None else float(gamma_fixed)
 
-    # initial A with bridging: (1 - |s_sem|)
-    bridge = 1.0 - np.abs(S_sem)
-    logits = (-beta * Dsyn + gamma * bridge) / cfg.tau_attn
+    b_sem = 1.0 - np.abs(S_sem)
+    logits = (-beta * Dsyn + gamma * b_sem) / cfg.tau_attn
     logits = logits - logits.max(axis=1, keepdims=True)
     W = np.exp(logits) + 1e-12
     A = sinkhorn_knopp(W, iters=cfg.sinkhorn_iters)
 
     theta_hist = np.zeros((steps+1, N)); theta_hist[0] = theta
     lam_list=[]; lam_sem_list=[]; chi_list=[]
-
-    common_noise = 0.0
     chi_sm = 0.0
 
     for t in range(1, steps+1):
-        # common noise
-        common_noise += np.sqrt(cfg.D_com * cfg.dt_fast) * np.random.randn()
-
-        # phase update
         lam = phase_order_param(theta)
         K = cfg.K0 * (1.0 + (1.0 - lam))
         ki = A.sum(axis=1) + 1e-12
         coupling = (A * np.sin(theta[None,:] - theta[:,None])).sum(axis=1) / ki
+
+        z_ind = np.random.randn(N)
+        z_common = np.random.randn()
         dtheta = (omega + K*coupling) * cfg.dt_fast \
-               + np.sqrt(2*cfg.D_ind*cfg.dt_fast)*np.random.randn(N) \
-               + np.sqrt(2*cfg.D_com*cfg.dt_fast)*common_noise
+               + np.sqrt(2*cfg.D_ind*cfg.dt_fast)*z_ind \
+               + np.sqrt(2*cfg.D_com*cfg.dt_fast)*z_common
         theta = (theta + dtheta) % (2*np.pi)
         theta_hist[t] = theta
 
-        # semantic drift toward local field
         Mloc = normalize_rows(A @ U)
         drift = proj_tangent_sphere(U, Mloc) * 0.2
         noise = np.random.normal(0.0, cfg.eta_sem, size=U.shape) * np.sqrt(cfg.dt_fast)
@@ -762,9 +689,8 @@ def run_sim(cfg: SimConfig, beta_fixed=None, gamma_fixed=None, add_theta_history
         chi_sm = (1 - cfg.chi_smooth_rho)*chi_sm + cfg.chi_smooth_rho*chi_raw
         chi = chi_sm
 
-        # slow attention refresh (beta/gamma fixed if provided)
-        bridge = 1.0 - np.abs(S_sem)
-        logits = (-beta * Dsyn + gamma * bridge) / cfg.tau_attn
+        b_sem = 1.0 - np.abs(S_sem)
+        logits = (-beta * Dsyn + gamma * b_sem) / cfg.tau_attn
         logits = logits - logits.max(axis=1, keepdims=True)
         W = np.exp(logits) + 1e-12
         A_target = sinkhorn_knopp(W, iters=cfg.sinkhorn_iters)
@@ -782,7 +708,7 @@ def run_sim(cfg: SimConfig, beta_fixed=None, gamma_fixed=None, add_theta_history
         "cfg": cfg,
     }
     return out
-```
+
 
 #### chi_compare_v4.py
 

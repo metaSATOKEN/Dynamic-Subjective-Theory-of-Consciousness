@@ -541,7 +541,7 @@ All quantities and operators use the definitions in Sections 2–3 of the paper.
 
 #### kernel_ref_v4.py
 
-
+```python
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass
 import numpy as np
@@ -708,7 +708,7 @@ def run_sim(cfg: SimConfig, beta_fixed=None, gamma_fixed=None, add_theta_history
         "cfg": cfg,
     }
     return out
-
+```
 
 #### chi_compare_v4.py
 

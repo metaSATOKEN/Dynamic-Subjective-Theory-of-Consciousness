@@ -308,7 +308,7 @@ This section describes the simulation framework used to evaluate the minimal dyn
 
 * **Language & Libraries:** Python 3.11, NumPy, SciPy, Matplotlib.
 * **Integration Scheme:** Euler–Maruyama for stochastic terms; fixed step size $\Delta t = 0.01$ (fast timescale).
-* **Random Seeds:** Fixed (seed=42) unless otherwise specified.
+* **Random Seeds:** Multiple fixed seeds; exact values reported per experiment (Section 4.7: 3 seeds for phase diagrams, 5 for ablations).
 * **Duration:** Simulations run for $T_{\mathrm{fast}} = 500$ steps ($T_{\mathrm{slow}} = \varepsilon T_{\mathrm{fast}}$ slow-time units).
 
 The separation between **fast** (phase $\theta_i$, semantics $\mathbf{u}_i$) and **slow** (Attention $A$, $\beta$, $\gamma$) variables is maintained with $\varepsilon \in [10^{-2}, 10^{-1}]$.
@@ -319,13 +319,13 @@ The separation between **fast** (phase $\theta_i$, semantics $\mathbf{u}_i$) and
 
 | Parameter              | Symbol                 | Value | Units      | Description                           |
 | ---------------------- | ---------------------- | ----- | ---------- | ------------------------------------- |
-| Units (agents)         | $N$                    | 400   | —          | Number of coupled oscillators         |
-| Semantic dim.          | $d$                    | 32    | —          | Dimension of semantic embedding space |
-| Natural freq. width    | $\Delta$               | 0.5   | —          | Half-width of $g(\omega)$             |
-| Lag for $\chi$         | $\tau$                 | 100   | fast steps | Structural persistence window         |
-| Independent noise      | $D_{\mathrm{ind}}$     | 0.05  | —          | Phase noise (independent)             |
-| Common noise           | $D_{\mathrm{com}}$     | 0.02  | —          | Phase noise (common mode)             |
-| Semantic noise         | $\eta$                 | 0.05  | —          | Amplitude of semantic diffusion       |
+| Units (agents)         | $N$                    | 140   | —          | Number of coupled oscillators         |
+| Semantic dim.          | $d$                    | 16    | —          | Dimension of semantic embedding space |
+| Natural freq. width    | $\Delta$               | 0.4   | —          | Half-width of $g(\omega)$             |
+| Lag for $\chi$         | $\tau$                 | 80    | fast steps | Structural persistence window         |
+| Independent noise      | $D_{\mathrm{ind}}$     | 0.03  | —          | Phase noise (independent)             |
+| Common noise           | $D_{\mathrm{com}}$     | 0.01  | —          | Phase noise (common mode)             |
+| Semantic noise         | $\eta$                 | 0.08  | —          | Amplitude of semantic diffusion       |
 | Attn. temperature      | $\tau_{\mathrm{attn}}$ | 1.0   | —          | Softmax temperature                   |
 | Syntactic gravity init | $\beta_0$              | 0.5   | —          | Initial $\beta$                       |
 | Semantic bridging init | $\gamma_0$             | 0.5   | —          | Initial $\gamma$                      |
@@ -435,7 +435,7 @@ Figure 7 (to be included) summarizes the inferred causal relationships:
 The desirable operating region lies along a "ridge" in $(\beta,\gamma)$-space where
 
 $$
-\lambda \gtrsim 0.70,\quad \lambda_{\mathrm{sem}} \gtrsim 0.55,\quad \chi \gtrsim 0.85,
+\lambda \gtrsim 0.40,\quad \lambda_{\mathrm{sem}} \gtrsim 0.50,\quad \chi \gtrsim 0.40,
 $$
 
 which empirically sustains subjectivity-like behavior without saturating diversity.
@@ -1167,8 +1167,8 @@ python3 criticality_v4.py
 # Output: Kc_scan_demo.csv, printed R² and p-values
 
 # 4. Run phase diagram and ablation studies
-python3 phase_diagram_v4.py --N 400 --d 32 --T 5.0 --seeds 10
-python3 ablation_v4.py      --N 400 --d 32 --T 5.0 --seeds 10
+python3 phase_diagram_v4.py --N 140 --d 16 --T 2.5 --seeds 3
+python3 ablation_v4.py      --N 140 --d 16 --T 2.5 --seeds 5
 
 # 5. One-shot execution
 ./run_all_v4_1.sh

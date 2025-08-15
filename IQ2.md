@@ -191,7 +191,7 @@ class RecyncController:
         # Modulate semantic coupling by prediction error
         K_sem = max(1.0 * (1.0 - 0.8 * np.tanh(5.0 * (obs["E_pred"] - 0.5))), 0.0)
         
-        return {"K_phase": K_phase, "K_sem": K_sem}
+        return {"K_phase": float(K_phase), "K_sem": float(K_sem)}
 ```
 
 ## **6. Conclusion**
@@ -302,4 +302,70 @@ def integrated_step(theta, U, A, Atil, E_pred_raw, E_pred_smooth, params, dt, rn
 - **Setup:** Fixed embeddings, $$\gamma_{\mathrm{mix}} \in [0,1]$$, vMF clustering
 - **Output:** Optimal $$\gamma_{\mathrm{mix}}$$ identification
 
-All protocols include complete reproducibility specifications with fixed seeds and configuration files.
+## **Appendix D: Background from DSTC 2.0 and ESAA2**
+
+### **D.1 Order Parameters**
+
+DSTC 2.0 defines three primary order parameters for quantifying the integrated state of a subjective system:
+
+1. **Phase Synchrony (λ)**
+   Measures the degree of phase locking across the population using a Kuramoto-type metric:
+
+   $$\lambda = \left| \frac{1}{N} \sum_{i=1}^N e^{i\theta_i} \right|^2$$
+
+   * Near 0: complete desynchronization
+   * Near 1: perfect synchrony
+
+2. **Semantic Coherence (λ_sem)**
+   Measures alignment of semantic vectors using the von Mises–Fisher (vMF) distribution:
+
+   $$\lambda_{\mathrm{sem}} = 1 - \exp(-c_{\mathrm{sem}} \, \hat{\kappa})$$
+
+   where $$\hat{\kappa}$$ is estimated from the mean resultant length $$R$$.
+
+3. **Structural Persistence (χ)**
+   Quantifies the temporal stability of network structure (phase–semantic coupling architecture).
+   In ESAA2, measured as the time-lagged correlation of attention-weight matrices:
+
+   $$\chi(t) = \frac{\langle A(t), A(t - \Delta t) \rangle_F}{\|A(t)\|_F \, \|A(t - \Delta t)\|_F}$$
+
+### **D.2 Framework Integration Map**
+
+IQ focuses on the relationship between **λ_sem** and **λ**, while DSTC 2.0 and ESAA2 cover the broader triple-coupling structure.
+
+* **DSTC 2.0**
+  Triple coupling:
+
+  $$(\lambda, \lambda_{\mathrm{sem}}, \chi) \ \xrightarrow{\ \text{interactions} \ }\ \Phi_{\mathrm{op}}$$
+
+  where $$\Phi_{\mathrm{op}}$$ is the operational integrated information measure.
+
+* **ESAA2**
+  Minimal dynamical kernel: prediction-error-driven endogenized attention
+
+  * $$\beta$$: syntactic coupling strength
+  * $$\gamma$$: balance between semantic coupling and structural persistence
+
+* **IQ**
+
+  * Space: semantic vectors on $$\mathbb{S}^{d-1}$$
+  * Model: prediction-error-driven $$K_{\mathrm{sem}}$$ and $$D_{\mathrm{sem}}$$
+  * Integration path:
+
+    $$\lambda_{\mathrm{sem}} \rightarrow K_{\mathrm{phase}} \rightarrow \lambda$$
+
+### **D.3 Conceptual Diagram (Textual)**
+
+```
+[ Semantic Layer ] --( λ_sem )--> [ Phase Layer ]
+        ↑                              ↑
+        |                              |
+ Prediction Error               Phase Coupling (K_phase)
+        ↓                              ↓
+[ Structural Layer ] <--( χ )--> [ Network Topology ]
+```
+
+* **Semantic Layer**: meaning-space geometry using vMF alignment
+* **Phase Layer**: Kuramoto-based phase synchrony model
+* **Structural Layer**: persistence of attention/topology captured by χ
+* IQ links λ_sem and λ, while connecting to ESAA2's structural model and DSTC 2.0's full integration.
